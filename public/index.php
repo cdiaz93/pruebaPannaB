@@ -33,8 +33,12 @@ switch ($controller) {
             case 'index':
                 $pacienteController->index();
                 break;
-            case 'crear':
-                $pacienteController->crear();
+            case 'findById':
+                $id= intval($_GET['id']);
+                $pacienteController->findById($id);
+                break;
+            case 'create':
+                $pacienteController->create();
                 break;
             default:
                 http_response_code(404);
@@ -82,13 +86,19 @@ switch ($controller) {
         break;
 
     case 'cita':
-        $cita= new CitaController();
+        $citaController= new CitaController();
         switch ($action) {
             case 'index':
-                $cita->index();
+                $citaController->index();
                 break;
             case 'create':
-                $cita->create();
+                $citaController->create();
+                break;
+            case 'store':
+                $citaController->store();
+                break;
+            case 'findAll':
+                $citaController->findAll();
                 break;
             default:
                 http_response_code(404);

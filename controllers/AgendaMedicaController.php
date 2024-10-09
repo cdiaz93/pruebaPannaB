@@ -17,7 +17,7 @@ Class AgendaMedicaController{
 
     public function __construct(){
         $db = (new Database())->getConnection();    //Inicializar conexion a la DB
-        $this->cita = new Cita($db);      //Instancia del modelo AgendaMedica
+        $this->cita = new Cita($db);                //Instancia del modelo Cita
         $this->agenda = new AgendaMedica($db);      //Instancia del modelo AgendaMedica
 
     }
@@ -63,11 +63,21 @@ Class AgendaMedicaController{
         $horariosDisponibles = array_diff($intervalos, $horasOcupadas);
 
         if (count($horariosDisponibles) > 0) {
-            header('Content-Type: application/json');  // Devuelve los resultados en formato JSON
-            echo json_encode($horariosDisponibles);
-            // echo "Horarios disponibles: " . implode(', ', $horariosDisponibles);
+            $response = [
+                'success' => true,
+                'horarios' => $horariosDisponibles,
+                'idTurno' => $idTurno,
+            ];
+
+            header('Content-Type: application/json'); 
+            echo json_encode($response);
+          
         } else {
-            echo "No hay horarios disponibles.";
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'No hay horarios disponibles para la fecha seleccionada.'
+            ]);
         }
 
        

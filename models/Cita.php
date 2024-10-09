@@ -10,10 +10,37 @@ Class Cita{
     public $estado;  //Confirmada - Cancelada
 
     private $conn;
-    private $table_name="citas";
+    private $table_name="citas"; //Tabla principal del modelo
+
+    //Tabla para hacer relaciones JOIN de campos foreneos.
+    private $table_join1="pacientes";
+    private $table_join2="agendamedica";
+    private $table_join3="medicos";
 
     public function __construct($db) {
         $this->conn = $db;
+    }
+
+    //**Consultar todas las citas medicas */
+    public function findAll(){
+        $query = "SELECT c.id AS cita_id,  
+            c.fecha         AS cita_fecha, 
+            c.hora          AS cita_hora, 
+            c.estado        AS cita_estado,
+            pc.nombre       AS paciente_nombres,
+            pc.apellido     AS paciente_apellidos, 
+            md.nombre       AS medico_nombre,
+            am.dia_semana   AS dia_semana
+            FROM " .$this->table_name. " AS c
+            INNER JOIN " .$this->table_join1. " AS pc ON c.id_paciente = pc.id 
+            INNER JOIN " .$this->table_join2. " AS am ON c.id_turno    = am.id_turno
+            INNER JOIN " .$this->table_join3. " AS md ON am.id_medico  =md.id"
+        ;
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
     }
 
     // Crear una nueva cita
@@ -59,7 +86,6 @@ Class Cita{
 
     // Actualizar una cita
     public function update($id) {
-
         $query = "UPDATE " . $this->table_name . " SET 
             id_paciente=:id_paciente, 
             id_turno=:id_turno, 

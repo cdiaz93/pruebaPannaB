@@ -26,6 +26,13 @@ Class CitaController{
         include '../views/citas/index.php';
     }
 
+    //Consultar todas las citas medicas
+    public function findAll(){
+        $citas = $this->cita->findAll();
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo  json_encode($citas);
+    }
 
     public function create() {
         include '../views/citas/create.php';
@@ -39,33 +46,31 @@ Class CitaController{
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //Se verifica que esten todos los datos requeridos del POST
-            if (!empty($_POST['id_paciente']) && !empty($_POST['id_medico']) && !empty($_POST['id_turno']) && !empty($_POST['fecha']) && !empty($_POST['hora'])) {
+            if (!empty($_POST['id_paciente']) && !empty($_POST['id_turno']) && !empty($_POST['fecha']) && !empty($_POST['hora'])) {
 
                 //Se asignan los valores de POST a las propiedades del objeto de Cita
                 $this->cita->id_paciente    = $_POST['id_paciente'];
-                $this->cita->id_medico      = $_POST['id_medico'];
                 $this->cita->id_turno       = $_POST['id_turno'];
                 $this->cita->fecha          = $_POST['fecha'];
                 $this->cita->hora           = $_POST['hora'];
                 $this->cita->estado         = 'Confirmada';
 
-                // Validar si el turno está disponible
-                // if ($this->validarDisponibilidad($_POST['id_medico'], $_POST['id_turno'], $_POST['fecha'], $_POST['hora'])) {
-                    // Crear la cita
-                    if ($this->cita->create()) {
-                        return json_encode(['message' => 'Cita creada correctamente.']);
-                    } else {
-                        return json_encode(['message' => 'Error al crear la cita.']);
-                    }
-                // } else {
-                //     return json_encode(['message' => 'El turno no está disponible.']);
-                // }
-
+                // Crear la cita
+                if ($this->cita->create()) {
+                    header('Content-Type: application/json'); 
+                    echo json_encode(['message' => 'Cita asignada correctamente.']);
+                } else {
+                    header('Content-Type: application/json'); 
+                    echo json_encode(['message' => 'Error al asignar la cita.']);
+                }
+              
             } else {
-                return json_encode(['message' => 'Datos incompletos.']);
+                header('Content-Type: application/json'); 
+                echo json_encode(['message' => 'Datos incompletos.']);
             }
         } else {
-            return json_encode(['message' => 'Método no permitido.']);
+            header('Content-Type: application/json'); 
+            echo json_encode(['message' => 'Método no permitido.']);
         }
 
     }
