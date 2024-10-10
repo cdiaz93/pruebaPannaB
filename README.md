@@ -14,7 +14,16 @@ Para que el proyecto funcione correctamente, debe ser guardado en la siguiente u
 Windows: 
 C:\xampp\htdocs\ProyectoPHP
 
-ProyectoPHP/ ├── 0_Documentacion/ ├── config/ ├── controllers/ ├── models/ ├── public/ └── views/
+```
+ProyectoPHP/ 
+├── 0_Documentacion/ 
+├── config/ 
+├── controllers/ 
+├── models/ 
+├── public/ 
+└── views/
+```
+
 
 Dentro de esta carpeta `ProyectoPHP`, encontrarás las diferentes carpetas del proyecto.
 
