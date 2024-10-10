@@ -105,6 +105,22 @@ Class CitaController{
         }
 
     }
+
+    //Cancela una cita poniendole es estado de Confirmado a 'Cancelado'
+    public function cancel($id){
+
+        $resultado = $this->cita->cancel($id, ['estado' => 'Cancelada']);
+
+        // Validar el resultado de la actualización
+        if ($resultado) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Cita cancelada correctamente.']);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Error al cancelar la cita.']);
+        }
+
+    }
 }
 
 ?>

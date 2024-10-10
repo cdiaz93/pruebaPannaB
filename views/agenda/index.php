@@ -121,7 +121,7 @@
                     </thead>
                     <tbody>
                         <tr> 
-                            <td class="text-center" colspan="4"> Inicie una consulta para mostrar datos </td>
+                            <td class="text-center" colspan="4"> No hay datos para mostrar </td>
                         </tr>
                     </tbody>
                     </table>

@@ -139,52 +139,24 @@ Class Cita{
     }
 
 
-    // Actualizar una cita
-    public function update($id) {
-        $query = "UPDATE " . $this->table_name . " SET 
-            id_paciente=:id_paciente, 
-            id_turno=:id_turno, 
-            fecha=:fecha, 
-            hora=:hora, 
-            estado=:estado 
-            WHERE id = :id
-        ";
-
+    //Cancelar una cita
+    public function cancel($id, $data) {
+      
+        $query = "UPDATE citas SET estado = :estado WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-
-        // Sanitizar
-        $this->id_paciente = htmlspecialchars(strip_tags($this->id_paciente));
-        $this->id_turno = htmlspecialchars(strip_tags($this->id_turno));
-        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
-        $this->hora = htmlspecialchars(strip_tags($this->hora));
-        $this->estado = htmlspecialchars(strip_tags($this->estado));
-
-        // Bind de parámetros
-        $stmt->bindParam(":id_paciente", $this->id_paciente);
-        $stmt->bindParam(":id_turno", $this->id_turno);
-        $stmt->bindParam(":fecha", $this->fecha);
-        $stmt->bindParam(":hora", $this->hora);
-        $stmt->bindParam(":estado", $this->estado);
-        $stmt->bindParam(":id", $this->id);
-
+    
+        // Asignar los parámetros
+        $stmt->bindParam(':estado', $data['estado']);
+        $stmt->bindParam(':id', $id);
+    
         if ($stmt->execute()) {
             return true;
         }
         return false;
+
     }
 
-    // Eliminar una cita
-    public function delete($id) {
 
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
 
 
 

@@ -112,10 +112,13 @@
                             <th scope="col">Fecha</th>
                             <th scope="col">Hora</th>
                             <th scope="col">Estado</th>
+                            <th scope="col">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                    
+                        <tr> 
+                            <td class="text-center" colspan="4"> No hay datos para mostrar </td>
+                        </tr>
                     </tbody>
                     </table>
                 </div>
@@ -161,27 +164,60 @@
                 const tbody = document.querySelector('#table_citas tbody');
                 tbody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
                 
-                citas.forEach(cita => {
+                if(citas.length>0){
+                    citas.forEach(cita => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${cita.cita_id}</td>
+                            <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
+                            <td>${cita.medico_nombre}</td>
+                            <td>${cita.dia_semana}</td>
+                            <td>${cita.cita_fecha}</td>
+                            <td>${cita.cita_hora}</td>
+                            <td>${cita.cita_estado}</td>
+                            <td>
+                                ${cita.cita_estado !== 'Cancelada' ? `
+                                    <button class="btn btn-danger btn-sm py-0 px-2" title="Cancelar cita" onclick="cancelarCita(${cita.cita_id})">
+                                        <i class="bi bi-x"></i> 
+                                    </button>` : ''
+                                }
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    
+                    });
+                }else{
                     const row = document.createElement('tr');
-                    
-                    // Cambia las propiedades según la estructura de tus datos
-                    row.innerHTML = `
-                        <td>${cita.cita_id}</td>
-                        <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
-                        <td>${cita.medico_nombre}</td>
-                        <td>${cita.dia_semana}</td>
-                        <td>${cita.cita_fecha}</td>
-                        <td>${cita.cita_hora}</td>
-                        <td>${cita.cita_estado}</td>
-                    `;
-                    
+                    row.innerHTML = `<td class="text-center" colspan="8"> No hay datos para mostrar </td>`;
                     tbody.appendChild(row);
-                
-                });
+                }
+
             })
             .catch(function (error) {
                 console.error('Error al cargar los datos de los médicos:', error);
             });
+        }
+
+
+        //Cambia el estado de una cita a Cancelada
+        function cancelarCita(id){  
+            const confirmation = confirm("¿Deseas cancelar la cita #"+id+"?");
+            if (confirmation) {
+                axios.patch('http://localhost/ProyectoPHP/public/index.php?controller=cita&action=cancel&id='+id)
+                .then(response => {
+                    const statusResponse = response.data.success
+                    const message = response.data.message
+                    if(statusResponse){
+                        alert(message);
+                        cargarDatosCitas();
+                    }else{
+                        alert(message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al actualizar el estado de la cita:', error);
+                });      
+            }
         }
 
         //Funcion que busca la informacion de citas medicas por medico o por paciente dependiendo el radibuton seleccionado
@@ -233,7 +269,13 @@
                                     <td>${cita.dia_semana}</td>
                                     <td>${cita.cita_fecha}</td>
                                     <td>${cita.cita_hora}</td>
-                                    <td>${cita.cita_estado}</td>`
+                                    <td>${cita.cita_estado}</td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="cancelar(${cita.cita_id})">
+                                            <i class="bi bi-x"></i> 
+                                        </button>
+                                    </td>
+                                    `
                                 ;
                                 tbody.appendChild(row);
                             });
@@ -291,8 +333,6 @@
 
         }
 
-
-     
 
         //Ejecutar la funcion apenas se carge la pagina
         window.onload = cargarDatosCitas;

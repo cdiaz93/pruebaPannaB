@@ -94,6 +94,10 @@ switch ($controller) {
             case 'store':
                 $citaController->store();
                 break;
+            case 'cancel':
+                $id= intval($_GET['id']);
+                $citaController->cancel($id);
+                break;
             case 'findAll':
                 $citaController->findAll();
                 break;
