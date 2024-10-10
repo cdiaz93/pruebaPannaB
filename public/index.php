@@ -69,19 +69,16 @@ switch ($controller) {
     case 'agendamedica':
         $agendaMedica = new AgendaMedicaController();
         switch ($action) {
+            case 'find':
+                $id= intval($_GET['input_busqueda']);
+                $agendaMedica->find($id);
+                break;
+           
             case 'findByDoctorId':
                 $id= intval($_GET['id']);
                 $fecha= $_GET['fecha'];
-
                 $agendaMedica->findByDoctorId($id, $fecha);
                 break;
-            case 'create':
-                $agendaMedica->create();
-                break;
-            
-            default:
-                http_response_code(404);
-                include '../views/error/404.php';  // Mostrar la página 404
         }
         break;
 
@@ -110,9 +107,7 @@ switch ($controller) {
                 $fecha= $_GET['fecha'];
                 $citaController->findByPatientId($id, $fecha);
                 break;
-            
 
-                
             default:
                 http_response_code(404);
                 include '../views/error/404.php';  // Mostrar la página 404

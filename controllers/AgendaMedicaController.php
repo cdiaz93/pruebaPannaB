@@ -22,6 +22,51 @@ Class AgendaMedicaController{
 
     }
 
+
+    //Consultar agenda medica de doctor por su id
+    public function find($id){
+        $agendaMedica = $this->agenda->find($id);
+
+        // Inicializamos un array para sacar datos únicos del medico de los resultados de la consulta
+        $medicos = [];
+
+        if (is_array($agendaMedica)) {
+            foreach ($agendaMedica as $agenda) {
+                $medicos[$agenda['medico_nombre']] = [
+                    'especialidad' => $agenda['medico_especialidad'],
+                    'correo' => $agenda['medico_correo'],
+                    'telefono' => $agenda['medico_telefono']
+                ];
+            }
+        }
+        $medicoUnico = reset($medicos);//Se obtienen los valores únicos
+
+        if ($agendaMedica) {
+            $response = [
+                'success' => true,
+                'data' => $agendaMedica,
+                'medico_unico' => [
+                    'nombre'         => key($medicos),
+                    'correo'        => $medicoUnico['correo'],
+                    'telefono'      => $medicoUnico['telefono'],
+                    'especialidad'  => $medicoUnico['especialidad']
+                ],
+                'message' => 'Agenda medica encontrado.'
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'No se encontró información con el id del medico suministrado.'
+            ]);
+        }
+    }
+
+
+    //
     public function findByDoctorId($id, $fecha){
 
        //Obtengo el nombre del dia de la semana de la fecha seleccionada

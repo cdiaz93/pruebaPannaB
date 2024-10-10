@@ -17,7 +17,7 @@
 <body>
 
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-3" href="#"> Sistema de control  citas Medicas </a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-3" href="#"> Sist. de control  citas Medicas </a>
 
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,16 +30,10 @@
                 <div class="position-sticky pt-3 fs-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"> <i class="bi bi-people-fill"></i> Pacientes </a>
+                            <a class="nav-link" href="http://localhost/ProyectoPHP/views/agenda/index.php"> <i class="bi bi-clipboard2-pulse-fill"></i>  Agenda Medica </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"> <i class="bi bi-people-fill"></i>  Medicos </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> <i class="bi bi-clipboard2-pulse-fill"></i>  Agenda Medica </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#"> <i class="bi bi-hospital"></i> Citas </a>
+                            <a class="nav-link active" href="http://localhost/ProyectoPHP/views/citas/index.php"> <i class="bi bi-hospital"></i> Citas </a>
                         </li>
                     </ul>
                 </div>

@@ -12,7 +12,7 @@ Class Cita{
     private $conn;
     private $table_name="citas"; //Tabla principal del modelo
 
-    //Tabla para hacer relaciones JOIN de campos foreneos.
+    //Tablas para hacer relaciones JOIN de campos foraneos.
     private $table_join1="pacientes";
     private $table_join2="agendamedica";
     private $table_join3="medicos";
