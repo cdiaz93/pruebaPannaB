@@ -270,10 +270,12 @@
                                     <td>${cita.cita_fecha}</td>
                                     <td>${cita.cita_hora}</td>
                                     <td>${cita.cita_estado}</td>
-                                    <td>
-                                        <button class="btn btn-danger" onclick="cancelar(${cita.cita_id})">
-                                            <i class="bi bi-x"></i> 
-                                        </button>
+                                   <td>
+                                        ${cita.cita_estado !== 'Cancelada' ? `
+                                            <button class="btn btn-danger btn-sm py-0 px-2" title="Cancelar cita" onclick="cancelarCita(${cita.cita_id})">
+                                                <i class="bi bi-x"></i> 
+                                            </button>` : ''
+                                        }
                                     </td>
                                     `
                                 ;
@@ -282,7 +284,7 @@
                     
                         }else{
                             const row = document.createElement('tr');
-                            row.innerHTML = `<td colspan="7" style="text-align: center;"> No hay datos para mostrar </td>`
+                            row.innerHTML = `<td colspan="8" style="text-align: center;"> No hay datos para mostrar </td>`
                             tbody.appendChild(row);
                         }
                        
@@ -311,14 +313,21 @@
                                     <td>${cita.dia_semana}</td>
                                     <td>${cita.cita_fecha}</td>
                                     <td>${cita.cita_hora}</td>
-                                    <td>${cita.cita_estado}</td>`
+                                    <td>${cita.cita_estado}</td>
+                                    <td>
+                                        ${cita.cita_estado !== 'Cancelada' ? `
+                                            <button class="btn btn-danger btn-sm py-0 px-2" title="Cancelar cita" onclick="cancelarCita(${cita.cita_id})">
+                                                <i class="bi bi-x"></i> 
+                                            </button>` : ''
+                                        }
+                                    </td>`
                                 ;
                                 tbody.appendChild(row);
                             });
                     
                         }else{
                             const row = document.createElement('tr');
-                            row.innerHTML = `<td colspan="7" style="text-align: center;"> No hay datos para mostrar </td>`
+                            row.innerHTML = `<td colspan="8" style="text-align: center;"> No hay datos para mostrar </td>`
                             tbody.appendChild(row);
                         }
                     })
