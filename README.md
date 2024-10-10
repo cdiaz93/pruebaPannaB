@@ -14,18 +14,14 @@ Para que el proyecto funcione correctamente, debe ser guardado en la siguiente u
 Windows: 
 C:\xampp\htdocs\ProyectoPHP
 
-ProyectoPHP │ 
-    ├── 0_Documentacion │ 
-    ├── config │ 
-    ├── controllers │
-    ├── models │ 
-    ├── public │ 
-    └── views
+ProyectoPHP/ ├── 0_Documentacion/ ├── config/ ├── controllers/ ├── models/ ├── public/ └── views/
 
 Dentro de esta carpeta `ProyectoPHP`, encontrarás las diferentes carpetas del proyecto.
 
 ## Conexión a base de datos.
 Dentro de la carpeta config/ el archivo database.php maneja las configuraciones para poder conectar con las base de datos. Si requiere hacer cambios en el host, usuarios y contraseña puede hacerlo desde este archivo.
+
+Dentro de la carpeta 0_Documentacion/ esta la información que se me suministro para el desarrollo de la prueba tecnica. aqui tambien esta el archivo .sql base para poder cagar en la base de datos de MySQL.
 
 
 ## Instrucciones para Iniciar XAMPP
