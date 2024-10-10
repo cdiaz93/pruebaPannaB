@@ -12,7 +12,7 @@ Este proyecto fue desarrollado en PHP y utiliza XAMPP como entorno de trabajo. A
 Para que el proyecto funcione correctamente, debe ser guardado en la siguiente ubicación dentro de la carpeta `htdocs` de XAMPP:
 
 Windows: 
-C:\xampp\htdocs\ProyectoPHP
+C:\xampp\htdocs\ProyectoPHP │ ├── 0_Documentacion │ ├── config │ ├── controllers │ ├── models │ ├── public │ └── views
 
 Dentro de esta carpeta `ProyectoPHP`, encontrarás las diferentes carpetas del proyecto.
 
