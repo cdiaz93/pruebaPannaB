@@ -67,7 +67,7 @@
 
 
                 <div class="my-5">
-                    <form action="">
+                    <form id="form_consultar_cita">
                         <div class="mb-3 row">
                             <div class="col-12 fs-6">
                                 <div class="row">
@@ -75,7 +75,7 @@
 
                                     <div class="col-12 col-md-8">
                                         <div class="form-check form-check-inline ">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="SEARCH_DOCTOR">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="SEARCH_DOCTOR" required>
                                             <label class="form-check-label" for="inlineRadio1"> Medico </label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                             <div class="col-4 col-sm-3 col-md-2">
-                                <button type="button" class="btn btn-primary" onclick="buscarCitaPersonalizada()">Buscar </button>
+                                <button type="submit" class="btn btn-primary" onclick="buscarCitaPersonalizada()">Buscar </button>
                             </div>
                         </div>
                     </form>
@@ -149,6 +149,13 @@
             });
         });
 
+        //Evento de escucha del formulario para cnsultar una cita
+        document.getElementById('form_consultar_cita').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const formData = new FormData(this);
+            buscarCitaPersonalizada(formData); 
+        });
+
 
 
         //Devuelve el listado de medicos disponibles y los carga en el select #id_medico del formulario
@@ -184,12 +191,24 @@
         }
 
         //Funcion que busca la informacion de citas medicas por medico o por paciente dependiendo el radibuton seleccionado
-        function buscarCitaPersonalizada(){
+        function buscarCitaPersonalizada(formData){
 
+
+            //Se crea objeto URLSearchParams a partir de formData
+            const params = new URLSearchParams();
+
+            //Se itera sobre los datos del FormData pra no incluir los valores del input de radiobuttons
+            for (const [key, value] of formData.entries()) {
+                console.log(key)
+                if (key !== 'inlineRadioOptions') { 
+                    params.append(key, value);
+                }
+            }
+            const queryData = params.toString();
+
+            //Se iterar sobre los radiobutons para saber cual fue seleccionado
             const radioButtons = document.querySelectorAll('input[name="inlineRadioOptions"]');
             let selectedValue = null;
-
-            // Iterar sobre los radiobutons para saber cual fue seleccionado
             radioButtons.forEach(radio => {
                 if (radio.checked) {
                     selectedValue = radio.value; 
@@ -201,27 +220,36 @@
 
                 //Busqueda por ID Doctor
                 if(selectedValue === 'SEARCH_DOCTOR'){
-                    axios.get('http://localhost/ProyectoPHP/public/index.php?controller=cita&action=findByDoctorId')
+
+                    //Se genera una URL con los parámetros
+                    const url= `http://localhost/ProyectoPHP/public/index.php?controller=cita&action=findByDoctorId&${queryData}`;
+                    axios.get(url)
                     .then(function (response) {
                         const citas = response.data; 
+
                         const tbody = document.querySelector('#table_citas tbody');
                         tbody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
-                        
-                        citas.forEach(cita => {
+                        if(citas.length>0){
+                            citas.forEach(cita => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${cita.cita_id}</td>
+                                    <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
+                                    <td>${cita.medico_nombre}</td>
+                                    <td>${cita.dia_semana}</td>
+                                    <td>${cita.cita_fecha}</td>
+                                    <td>${cita.cita_hora}</td>
+                                    <td>${cita.cita_estado}</td>`
+                                ;
+                                tbody.appendChild(row);
+                            });
+                    
+                        }else{
                             const row = document.createElement('tr');
-                            
-                            // Cambia las propiedades según la estructura de tus datos
-                            row.innerHTML = `
-                                <td>${cita.cita_id}</td>
-                                <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
-                                <td>${cita.medico_nombre}</td>
-                                <td>${cita.dia_semana}</td>
-                                <td>${cita.cita_fecha}</td>
-                                <td>${cita.cita_hora}</td>
-                                <td>${cita.cita_estado}</td>
-                            `;
+                            row.innerHTML = `<td colspan="7" style="text-align: center;"> No hay datos para mostrar </td>`
                             tbody.appendChild(row);
-                        });
+                        }
+                       
                     })
                     .catch(function (error) {
                         console.error('Error al cargar los datos de los médicos:', error);
@@ -230,28 +258,33 @@
                 }else if(selectedValue === 'SEARCH_PATIENT'){
 
                     //Busqueda por ID de Paciente
-                    axios.get('http://localhost/ProyectoPHP/public/index.php?controller=cita&action=findByPatientId')
+                    const url= `http://localhost/ProyectoPHP/public/index.php?controller=cita&action=findByPatientId&${queryData}`
+                    axios.get(url)
                     .then(function (response) {
                         const citas = response.data; 
 
                         const tbody = document.querySelector('#table_citas tbody');
                         tbody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
-                        
-                        citas.forEach(cita => {
+                        if(citas.length>0){
+                            citas.forEach(cita => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${cita.cita_id}</td>
+                                    <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
+                                    <td>${cita.medico_nombre}</td>
+                                    <td>${cita.dia_semana}</td>
+                                    <td>${cita.cita_fecha}</td>
+                                    <td>${cita.cita_hora}</td>
+                                    <td>${cita.cita_estado}</td>`
+                                ;
+                                tbody.appendChild(row);
+                            });
+                    
+                        }else{
                             const row = document.createElement('tr');
-                            
-                            // Cambia las propiedades según la estructura de tus datos
-                            row.innerHTML = `
-                                <td>${cita.cita_id}</td>
-                                <td>${cita.paciente_nombres + cita.paciente_apellidos}</td>
-                                <td>${cita.medico_nombre}</td>
-                                <td>${cita.dia_semana}</td>
-                                <td>${cita.cita_fecha}</td>
-                                <td>${cita.cita_hora}</td>
-                                <td>${cita.cita_estado}</td>
-                            `;
+                            row.innerHTML = `<td colspan="7" style="text-align: center;"> No hay datos para mostrar </td>`
                             tbody.appendChild(row);
-                        });
+                        }
                     })
                     .catch(function (error) {
                         console.error('Error al cargar los datos de los médicos:', error);

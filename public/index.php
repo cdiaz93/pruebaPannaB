@@ -100,6 +100,19 @@ switch ($controller) {
             case 'findAll':
                 $citaController->findAll();
                 break;
+            case 'findByDoctorId':
+                $id= intval($_GET['input_busqueda']);
+                $fecha= $_GET['fecha'];
+                $citaController->findByDoctorMedicalShift($id, $fecha);
+                break;
+            case 'findByPatientId':
+                $id= intval($_GET['input_busqueda']);
+                $fecha= $_GET['fecha'];
+                $citaController->findByPatientId($id, $fecha);
+                break;
+            
+
+                
             default:
                 http_response_code(404);
                 include '../views/error/404.php';  // Mostrar la página 404

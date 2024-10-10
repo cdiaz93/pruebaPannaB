@@ -34,6 +34,37 @@ Class CitaController{
         echo  json_encode($citas);
     }
 
+    //Consultar todas las citas medicas del Medico para una fecha determinada
+    public function findByDoctorMedicalShift($id, $fecha){
+
+        //Obtengo el nombre del dia de la semana de la fecha seleccionada
+        $timestamp = strtotime($fecha);
+        $diaNumero = date('N', $timestamp); // 1 (Lunes) a 7 (Domingo)
+        $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        $Fdia =  $dias[$diaNumero - 1]; 
+
+        //Consulto los datos de agenda del doctor para el dia de la semana seleccionado.
+        $agendaMedica = $this->agenda->findByDoctorDay($id, $Fdia);
+
+        //Obtengo el id_turno del medico para poder hacer la consulta final.
+        $idTurno = $agendaMedica['id_turno'];
+
+
+        $citas = $this->cita->findByDoctorMedicalShift($idTurno, $fecha);
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo  json_encode($citas);
+
+    }
+
+    //Consultar todas las citas medicas del paciente para una fecha determinada
+    public function findByPatientId($id, $fecha){
+        $citas = $this->cita->findByPatientId($id, $fecha);
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo  json_encode($citas);
+    }
+
     public function create() {
         include '../views/citas/create.php';
     }

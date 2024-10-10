@@ -43,6 +43,61 @@ Class Cita{
         return $rows;
     }
 
+    //Consultar todas las citas medicas del Medico para una fecha determinada
+    public function findByDoctorMedicalShift($idTurno, $fecha){
+        $query = "SELECT c.id AS cita_id,  
+            c.fecha         AS cita_fecha, 
+            c.hora          AS cita_hora, 
+            c.estado        AS cita_estado,
+            pc.nombre       AS paciente_nombres,
+            pc.apellido     AS paciente_apellidos, 
+            md.nombre       AS medico_nombre,
+            am.dia_semana   AS dia_semana
+            FROM " .$this->table_name. " AS c
+            INNER JOIN " .$this->table_join1. " AS pc ON c.id_paciente = pc.id 
+            INNER JOIN " .$this->table_join2. " AS am ON c.id_turno    = am.id_turno
+            INNER JOIN " .$this->table_join3. " AS md ON am.id_medico  =md.id
+            WHERE c.id_turno= :idTurno AND c.fecha= :fecha "
+        ;
+        
+        $stmt = $this->conn->prepare($query);
+
+        // Vincula el parámetro
+        $stmt->bindParam(':idTurno', $idTurno, PDO::PARAM_INT); // Especifica que el parámetro es un entero
+        $stmt->bindParam(':fecha', $fecha, PDO::PARAM_STR); // Especifica que el parámetro es un String
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+
+    }
+
+    //Consultar todas las citas medicas del paciente para una fecha determinada
+    public function findByPatientId($id, $fecha){
+        $query = "SELECT c.id AS cita_id,  
+            c.fecha         AS cita_fecha, 
+            c.hora          AS cita_hora, 
+            c.estado        AS cita_estado,
+            pc.nombre       AS paciente_nombres,
+            pc.apellido     AS paciente_apellidos, 
+            md.nombre       AS medico_nombre,
+            am.dia_semana   AS dia_semana
+            FROM " .$this->table_name. " AS c
+            INNER JOIN " .$this->table_join1. " AS pc ON c.id_paciente = pc.id 
+            INNER JOIN " .$this->table_join2. " AS am ON c.id_turno    = am.id_turno
+            INNER JOIN " .$this->table_join3. " AS md ON am.id_medico  =md.id
+            WHERE c.id_paciente= :id AND c.fecha= :fecha"
+        ;
+
+        $stmt = $this->conn->prepare($query);
+
+        // Vincula el parámetro
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT); // Especifica que el parámetro es un entero
+        $stmt->bindParam(':fecha', $fecha, PDO::PARAM_STR); // Especifica que el parámetro es un String
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    }
+
     // Crear una nueva cita
     public function create() {
         $query = "INSERT INTO " .$this->table_name. " SET 
