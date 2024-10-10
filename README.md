@@ -4,7 +4,7 @@ Este proyecto fue desarrollado en PHP y utiliza XAMPP como entorno de trabajo. A
 
 ## Requisitos
 
-- **PHP**: Este proyecto está construido con PHP.
+- **PHP**: Este proyecto está construido con PHP (Viene incluido en XAMPP).
 - **XAMPP**: Se utiliza para gestionar el servidor local y la base de datos.
 
 ## Estructura de Archivos
@@ -12,9 +12,20 @@ Este proyecto fue desarrollado en PHP y utiliza XAMPP como entorno de trabajo. A
 Para que el proyecto funcione correctamente, debe ser guardado en la siguiente ubicación dentro de la carpeta `htdocs` de XAMPP:
 
 Windows: 
-C:\xampp\htdocs\ProyectoPHP │ ├── 0_Documentacion │ ├── config │ ├── controllers │ ├── models │ ├── public │ └── views
+C:\xampp\htdocs\ProyectoPHP
+
+ProyectoPHP │ 
+    ├── 0_Documentacion │ 
+    ├── config │ 
+    ├── controllers │
+    ├── models │ 
+    ├── public │ 
+    └── views
 
 Dentro de esta carpeta `ProyectoPHP`, encontrarás las diferentes carpetas del proyecto.
+
+## Conexión a base de datos.
+Dentro de la carpeta config/ el archivo database.php maneja las configuraciones para poder conectar con las base de datos. Si requiere hacer cambios en el host, usuarios y contraseña puede hacerlo desde este archivo.
 
 
 ## Instrucciones para Iniciar XAMPP
