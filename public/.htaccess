@@ -1,8 +1,17 @@
 RewriteEngine On
 
+RewriteBase /Proyecto/public/
+
 RewriteRule ^([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ index.php?request=$1/$2 [L]
 
+
+# Verificar si la solicitud no corresponde a un archivo existente
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Verifica si la solicitud no corresponde a un directorio existente
+RewriteCond %{REQUEST_FILENAME} !-d
+
 # Redirigir las vistas sin mostrar "views" en la URL
-RewriteRule ^citas/index$ ../views/citas/index.php [L]
-RewriteRule ^paciente/index$ ../views/home/index.php [L]
-# Agrega más reglas según sea necesario para otras vistas
+RewriteRule ^home/index\.php$ index.php?controller=home&action=index [L,QSA]
+RewriteRule ^cita/index\.php$ index.php?controller=cita&action=index [L,QSA]
+RewriteRule ^agendamedica/index\.php$ index.php?controller=agendamedica&action=index [L,QSA]
